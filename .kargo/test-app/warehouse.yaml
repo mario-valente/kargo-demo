@@ -6,7 +6,10 @@ metadata:
 spec:
   subscriptions:
     - image:
-        repoURL: localhost:5001/kargo-test-app
+        # O pod do Kargo roda dentro do cluster kind-hub e enxerga o registry
+        # local pelo nome do container na rede docker "kind" (kind-registry:5000),
+        # não por localhost:5001 (isso só funciona no host / via containerd nos nós).
+        repoURL: kind-registry:5000/kargo-test-app
         # registry local do kind roda em HTTP, sem TLS
         insecureSkipTLSVerify: true
         constraint: "*"
