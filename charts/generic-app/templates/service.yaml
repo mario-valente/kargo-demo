@@ -3,10 +3,9 @@ kind: Service
 metadata:
   name: {{ .Release.Name }}
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: {{ .Release.Name }}
   ports:
     - port: {{ .Values.service.port }}
       targetPort: 8080
-      nodePort: 30080
