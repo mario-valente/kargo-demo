@@ -6,4 +6,4 @@ replicaCount: 2
 
 image:
   repository: localhost:5001/kargo-test-app
-  tag: "1.0.0"
+  tag: 1.0.0
