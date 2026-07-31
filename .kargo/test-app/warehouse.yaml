@@ -1,0 +1,13 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Warehouse
+metadata:
+  name: kargo-test-app
+  namespace: kargo-test-app
+spec:
+  subscriptions:
+    - image:
+        repoURL: localhost:5001/kargo-test-app
+        # registry local do kind roda em HTTP, sem TLS
+        insecureSkipTLSVerify: true
+        constraint: "*"
+        discoveryLimit: 10

@@ -1,0 +1,38 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: non-prod
+  namespace: kargo-test-app
+spec:
+  requestedFreight:
+    - origin:
+        kind: Warehouse
+        name: kargo-test-app
+      sources:
+        direct: true
+  promotionTemplate:
+    spec:
+      steps:
+        - task:
+            name: helm-promo
+          as: promo-process
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: prod
+  namespace: kargo-test-app
+spec:
+  requestedFreight:
+    - origin:
+        kind: Warehouse
+        name: kargo-test-app
+      sources:
+        stages:
+          - non-prod
+  promotionTemplate:
+    spec:
+      steps:
+        - task:
+            name: helm-promo
+          as: promo-process

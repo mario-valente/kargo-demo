@@ -1,0 +1,9 @@
+
+# NOTA: estes manifests (Project, Warehouse, PromotionTask, Stages) vivem no
+# GitOps repo — a regra de automação do Kargo é código versionado igual
+# qualquer outro manifest, não algo definido inline em script de instalação.
+# Quem quiser mudar a regra de promoção abre PR aqui, igual mudaria um values.yaml.
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Project
+metadata:
+  name: kargo-test-app

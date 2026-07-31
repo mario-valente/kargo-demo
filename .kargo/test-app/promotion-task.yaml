@@ -1,0 +1,44 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: PromotionTask
+metadata:
+  name: helm-promo
+  namespace: kargo-test-app
+spec:
+  vars:
+    - name: gitopsRepo
+      value: https://github.com/mario-valente/kargo-demo.git
+    - name: imageRepo
+      value: localhost:5001/kargo-test-app
+  steps:
+    - uses: git-clone
+      config:
+        repoURL: ${{ vars.gitopsRepo }}
+        checkout:
+          - branch: main
+            path: ./work
+    # Edita só o values.yaml do ambiente sendo promovido (apps/test-app/values/<stage>.yaml).
+    # O chart genérico (charts/generic-app) e o values/base.yaml compartilhado nunca são tocados
+    # pela promoção — só a tag de imagem do ambiente específico.
+    - uses: helm-update-image
+      as: update
+      config:
+        path: ./work/apps/test-app/values/${{ ctx.stage }}.yaml
+        images:
+          - image: ${{ vars.imageRepo }}
+            key: image.tag
+            value: Tag
+    - uses: git-commit
+      as: commit
+      config:
+        path: ./work
+        message: ${{ task.outputs.update.commitMessage }}
+    - uses: git-push
+      config:
+        path: ./work
+    - uses: argocd-update
+      config:
+        apps:
+          - name: test-app-${{ ctx.stage }}
+            sources:
+              - repoURL: ${{ vars.gitopsRepo }}
+                desiredRevision: ${{ task.outputs.commit.commit }}

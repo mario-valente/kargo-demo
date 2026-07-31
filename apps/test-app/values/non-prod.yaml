@@ -1,0 +1,9 @@
+# Override específico do ambiente non-prod.
+# A tag da imagem abaixo é o campo que o Kargo atualiza a cada promoção
+# (via step helm-update-image do PromotionTask) — não editar manualmente
+# durante uma promoção em andamento.
+replicaCount: 1
+
+image:
+  repository: localhost:5001/kargo-test-app
+  tag: "1.0.0"

@@ -1,0 +1,9 @@
+# Defaults compartilhados por todos os ambientes do test-app.
+# Apenas config de app "normal" — NÃO inclui tag de imagem (isso é por ambiente).
+resources:
+  requests:
+    cpu: 10m
+    memory: 32Mi
+  limits:
+    cpu: 50m
+    memory: 64Mi
