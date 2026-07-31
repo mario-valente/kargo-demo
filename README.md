@@ -4,7 +4,10 @@ App de demonstração usada na POC do [Kargo](https://kargo.io) em
 [poc-kargo](https://github.com/mario-valente/poc-kargo) (clusters kind: hub, staging, prod).
 
 - `base/`: manifests kustomize da aplicação (nginx).
-- `stages/staging/`, `stages/prod/`: overlays por estágio.
+- `environments/non-prod/`, `environments/prod/`: overlays por ambiente.
 
-O Kargo escreve nas branches `stage/staging` e `stage/prod` deste repositório durante as
-promoções (padrão GitOps: Git é a fonte de verdade, Argo CD sincroniza a partir daqui).
+Modelo **mono-branch**: tudo vive na branch `main`, organizado por pastas
+(`environments/<ambiente>/`). O Kargo promove atualizando o `kustomization.yaml`
+do ambiente correspondente e commitando direto na `main` — sem branches por
+estágio. O Argo CD sincroniza cada `Application` a partir de
+`main:environments/<ambiente>`.
