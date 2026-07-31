@@ -34,6 +34,22 @@ spec:
     - uses: git-push
       config:
         path: ./work
+    # Tag móvel por Stage (ex: non-prod-latest, prod-latest). Como só a promoção
+    # DESTE stage move a tag DESTE stage, um commit promovido para prod nunca
+    # afeta a tag non-prod-latest — isso evita o problema de "Unhealthy" que
+    # ocorre quando várias Applications observam a mesma branch main (o SHA
+    # resolvido de main muda a cada commit de qualquer ambiente, mas o SHA da
+    # tag só muda quando o próprio ambiente é promovido).
+    - uses: git-tag
+      config:
+        path: ./work
+        tag: ${{ ctx.stage }}-latest
+        message: Promotion to ${{ ctx.stage }}
+        force: true
+    - uses: git-push
+      config:
+        path: ./work
+        tag: ${{ ctx.stage }}-latest
     - uses: argocd-update
       config:
         apps:
