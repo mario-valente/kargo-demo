@@ -19,14 +19,13 @@ spec:
     # Edita só o values.yaml do ambiente sendo promovido (apps/test-app/values/<stage>.yaml).
     # O chart genérico (charts/generic-app) e o values/base.yaml compartilhado nunca são tocados
     # pela promoção — só a tag de imagem do ambiente específico.
-    - uses: helm-update-image
+    - uses: yaml-update
       as: update
       config:
         path: ./work/apps/test-app/values/${{ ctx.stage }}.yaml
-        images:
-          - image: ${{ vars.imageRepo }}
-            key: image.tag
-            value: Tag
+        updates:
+          - key: image.tag
+            value: ${{ imageFrom(vars.imageRepo).Tag }}
     - uses: git-commit
       as: commit
       config:
