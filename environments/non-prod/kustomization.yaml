@@ -13,4 +13,4 @@ patches:
       value: 1
 images:
 - name: public.ecr.aws/nginx/nginx
-  newTag: 1.31.3
+  newTag: 1.29.8
