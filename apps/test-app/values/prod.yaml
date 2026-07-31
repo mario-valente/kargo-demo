@@ -2,7 +2,7 @@
 # A tag da imagem abaixo é o campo que o Kargo atualiza a cada promoção
 # (via step helm-update-image do PromotionTask) — não editar manualmente
 # durante uma promoção em andamento.
-replicaCount: 2
+replicaCount: 1
 
 image:
   repository: localhost:5001/kargo-test-app
