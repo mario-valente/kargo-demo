@@ -34,10 +34,13 @@ spec:
     - uses: git-push
       config:
         path: ./work
+    # TESTE: sem "desiredRevision" — evita a comparação literal de SHA que
+    # causa falso Unhealthy quando outro stage avança a mesma branch main.
+    # O sync ainda é disparado (repoURL presente), só não trava a checagem
+    # de health nesse SHA exato.
     - uses: argocd-update
       config:
         apps:
           - name: test-app-${{ ctx.stage }}
             sources:
               - repoURL: ${{ vars.gitopsRepo }}
-                desiredRevision: ${{ task.outputs.commit.commit }}
